@@ -17,6 +17,7 @@ export default function Sidebar() {
       <SidebarIcon src="/sidebar/artist.svg" />
       <SidebarIcon src="/sidebar/album.svg" />
       <SidebarIcon src="/sidebar/songs.svg" />
+      <SidebarIcon src="/sidebar/settings.svg" />
     </div>
   );
 }
