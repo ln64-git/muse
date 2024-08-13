@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
+import Player from "@/components/player";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,8 +24,12 @@ export default function RootLayout({
           <Sidebar />
           <div className="flex flex-col w-full h-full">
             <Header />
-            <div className="flex-grow h-full bg-neutral-950 pr-2 pb-2 ">
-              <div className="bg-neutral-900 rounded-lg h-full">{children}</div>
+            <div className="flex-grow h-full bg-neutral-950 pr-2">
+              <div className="bg-neutral-900 rounded-lg  h-full flex flex-col justify-between">
+                <div className=" rounded-lg bg-neutral-900 "></div>
+                <div className=" rounded-lg h-full ">{children}</div>
+                <Player />
+              </div>
             </div>
           </div>
         </div>
