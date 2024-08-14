@@ -1,9 +1,14 @@
 import Header from "../components/header";
 import Player from "../components/player";
 import Sidebar from "../components/sidebar";
+import { useUserStore } from "../lib/zustand/user-store";
 import "./App.css";
 
 function App() {
+  const currentPage = useUserStore((state) => state.currentPage);
+  console.log("currentPage: ", currentPage);
+  // const setCurrentPage = useUserStore((state) => state.setCurrentPage);
+
   return (
     <main>
       <div className="h-screen flex text-neutral-400">
