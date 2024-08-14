@@ -1,6 +1,14 @@
+import { useUserStore } from "../lib/zustand/user-store";
+
 function PlayerIcon({ src, size }: { src: string; size: number }) {
+  const runCommand = useUserStore((state) => state.runCommand);
+  const command = src.replace("/player/", "").replace(".svg", "");
+
   return (
-    <div className="min-w-[40px] opacity-100 p-1 m-3 rounded-lg transition-all duration-300 transform hover:scale-110 hover:filter hover:brightness-150 hover:shadow-lg">
+    <div
+      onClick={() => runCommand(command)}
+      className="min-w-[40px] opacity-100 p-1 m-3 rounded-lg transition-all duration-300 transform hover:scale-110 hover:filter hover:brightness-150 hover:shadow-lg"
+    >
       <img src={src} width={size} height={size} alt="Icon" />
     </div>
   );

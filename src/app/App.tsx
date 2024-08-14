@@ -5,8 +5,8 @@ import { useUserStore } from "../lib/zustand/user-store";
 import "./App.css";
 
 function App() {
-  const currentPage = useUserStore((state) => state.currentPage);
-  console.log("currentPage: ", currentPage);
+  const command = useUserStore((state) => state.command);
+  console.log("command: ", command);
 
   return (
     <main>
