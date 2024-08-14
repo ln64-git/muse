@@ -7,7 +7,6 @@ import "./App.css";
 function App() {
   const currentPage = useUserStore((state) => state.currentPage);
   console.log("currentPage: ", currentPage);
-  // const setCurrentPage = useUserStore((state) => state.setCurrentPage);
 
   return (
     <main>

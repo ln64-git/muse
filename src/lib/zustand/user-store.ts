@@ -7,7 +7,7 @@ interface UserState {
 }
 
 export const useUserStore = create<UserState>()((set) => ({
-  currentPage: "test",
+  currentPage: "library",
   previousPage: "",
   setCurrentPage: (url) =>
     set((state) => ({
