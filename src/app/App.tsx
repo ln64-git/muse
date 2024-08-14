@@ -5,9 +5,14 @@ import Player from "../components/player";
 import Sidebar from "../components/sidebar";
 import "./App.css";
 
+import { invoke } from "@tauri-apps/api";
+
 function App() {
   useEffect(() => {
     function fetchUserSettings() {
+      invoke("greet", { name: "World" }).then((response) =>
+        console.log(response)
+      );
       console.log("got");
     }
     fetchUserSettings();

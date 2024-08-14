@@ -2,12 +2,19 @@ import { useUserStore } from "../lib/zustand/user-store";
 
 function SidebarIcon({ src }: { src: string }) {
   const setCurrentPage = useUserStore((state) => state.setCurrentPage);
+  const currentPage = useUserStore((state) => state.currentPage);
   const page = src.replace("/sidebar/", "").replace(".svg", "");
+
+  const isActive = currentPage === page;
 
   return (
     <div
       onClick={() => setCurrentPage(page)}
-      className="min-w-[45px] text-neutral-400 opacity-80 hover:filter hover:brightness-150 p-2 m-3 rounded-lg transition-all duration-300 transform hover:scale-110 hover:bg-neutral-900 hover:shadow-lg"
+      className={`min-w-[45px] text-neutral-400 p-2 m-3 rounded-lg transition-all duration-300 transform ${
+        isActive
+          ? "filter brightness-200"
+          : "opacity-80 hover:filter hover:brightness-150"
+      } hover:scale-110 hover:bg-neutral-900 hover:shadow-lg`}
     >
       <img src={src} width={40} height={40} alt="Icon" />
     </div>

@@ -11,10 +11,7 @@ export default function Settings() {
   };
 
   useEffect(() => {
-    // const setUserDirectories = useUserStore(
-    //   (state) => state.setUserDirectories
-    // );
-    // setUserDirectories(userDirs);
+    // TODO - Update database with userDirs using Tauri function
   }, userDirs);
 
   return (
