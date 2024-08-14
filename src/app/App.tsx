@@ -13,7 +13,6 @@ function App() {
       invoke("greet", { name: "World" }).then((response) =>
         console.log(response)
       );
-      console.log("got");
     }
     fetchUserSettings();
   }, []);
