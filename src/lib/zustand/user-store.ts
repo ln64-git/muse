@@ -25,6 +25,6 @@ export const useUserStore = create<UserState>()((set) => ({
       set(() => ({
         command: "",
       }));
-    }, 3000);
+    }, 1000);
   },
 }));

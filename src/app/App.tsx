@@ -1,13 +1,10 @@
+import Display from "../components/display";
 import Header from "../components/header";
 import Player from "../components/player";
 import Sidebar from "../components/sidebar";
-import { useUserStore } from "../lib/zustand/user-store";
 import "./App.css";
 
 function App() {
-  const command = useUserStore((state) => state.command);
-  console.log("command: ", command);
-
   return (
     <main>
       <div className="h-screen flex text-neutral-400">
@@ -17,7 +14,9 @@ function App() {
           <div className="flex-grow h-full bg-neutral-950 pr-2 pb-1">
             <div className="bg-neutral-900 rounded-lg h-full flex flex-col justify-between">
               <div className=" rounded-lg bg-neutral-900"></div>
-              <div className=" rounded-lg h-full"></div>
+              <div className=" rounded-lg h-full">
+                <Display />
+              </div>
               <Player />
             </div>
           </div>
