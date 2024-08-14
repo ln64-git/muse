@@ -1,60 +1,87 @@
-// Prevents additional console window from appearing on Windows in release mode. DO NOT REMOVE!!
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+use muse::{AppState, Settings};
+use std::sync::Arc;
+use surrealdb::sql::Thing;
+use surrealdb::Error;
+use surrealdb::{
+    engine::local::{Mem, RocksDb},
+    Surreal,
+};
+use tauri::{self, api::path::data_dir, State};
+use tokio::sync::Mutex;
 
-use serde::{Deserialize, Serialize};
-use tauri::{self};
+use serde_json;
 
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+async fn fetch_settings(state: State<'_, Arc<Mutex<AppState>>>) -> Result<String, String> {
+    let app_state_guard = state.lock().await;
+    let system_db = &app_state_guard.system_db;
+
+    let system_settings_result: Result<Vec<Settings>, _> = system_db.select("settings").await;
+
+    let setting_entries = match system_settings_result {
+        Ok(entries) => entries,
+        Err(error) => return Err(format!("Database error: {:?}", error)),
+    };
+
+    serde_json::to_string(&setting_entries).map_err(|e| format!("Serialization error: {}", e))
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Settings {
-    user_library_paths: Vec<String>,
-}
-
-// Function to Initialize SurrealDB Database
-fn initialize_surrealdb() -> Result<(), String> {
-    // Add code here to initialize the SurrealDB connection
-    // This might involve setting up the database URL, credentials, and establishing a connection
-    // Return Ok(()) if successful, or an appropriate error message if initialization fails
-    Ok(())
-}
-
-// Function to Fetch Settings (inside database)
 #[tauri::command]
-fn fetch_settings() -> Result<Settings, String> {
-    // Add code here to query the database for settings
-    // This might involve running a query like "SELECT * FROM settings" and deserializing the result into a Settings struct
-    // Return the Settings struct or an appropriate error message if the fetch fails
-    Ok(Settings {
-        user_library_paths: vec!["Library1".to_string()], // Example data
-    })
-}
+async fn update_settings(
+    state: State<'_, Arc<Mutex<AppState>>>,
+    new_settings: Settings,
+) -> Result<(), String> {
+    let app_state_guard = state.lock().await;
+    let system_db = &app_state_guard.system_db;
 
-// Function to Update Settings (inside database)
-#[tauri::command]
-fn update_settings(_new_settings: Settings) -> Result<(), String> {
-    // Add code here to update the settings in the database
-    // This might involve running an "UPDATE settings SET ..." query with the new settings data
-    // Return Ok(()) if successful, or an appropriate error message if the update fails
-    Ok(())
-}
+    let update_result: Result<Vec<Thing>, Error> =
+        system_db.update("settings").content(new_settings).await;
 
-fn main() {
-    // Initialize the SurrealDB database at the start of the application
-    if let Err(e) = initialize_surrealdb() {
-        eprintln!("Failed to initialize the database: {}", e);
-        return;
+    match update_result {
+        Ok(_) => Ok(()),
+        Err(error) => Err(format!("Database update error: {:?}", error)),
     }
+}
+
+#[tokio::main]
+async fn main() {
+    // Initialize the SurrealDB database at the start of the application
+    let app_state = initialize_application()
+        .await
+        .expect("Failed to initialize the database");
+
+    let shared_state = Arc::new(Mutex::new(app_state));
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![
-            greet,
-            fetch_settings,
-            update_settings
-        ])
+        .manage(shared_state)
+        .invoke_handler(tauri::generate_handler![fetch_settings, update_settings])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+async fn initialize_application() -> Result<AppState, String> {
+    let data_dir = data_dir().unwrap();
+    let db_path = data_dir.join("muse");
+
+    let system_db: Surreal<surrealdb::engine::local::Db> =
+        Surreal::new::<RocksDb>(db_path.to_str().unwrap())
+            .await
+            .map_err(|e| e.to_string())?;
+    system_db
+        .use_ns("user")
+        .use_db("muse")
+        .await
+        .map_err(|e| e.to_string())?;
+
+    let memory_db = Surreal::new::<Mem>(()).await.map_err(|e| e.to_string())?;
+    memory_db
+        .use_ns("user")
+        .use_db("muse")
+        .await
+        .map_err(|e| e.to_string())?;
+
+    Ok(AppState {
+        system_db,
+        memory_db,
+    })
 }
