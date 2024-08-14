@@ -12,7 +12,8 @@ interface Track {
 }
 
 interface Library {
-  id: string; // Unique identifier for the library
+  id: string;
+  directory: string;
   name: string;
-  tracks: Track[]; // Array of tracks in this library
+  tracks: Track[];
 }

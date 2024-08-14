@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Display from "../components/display";
 import Header from "../components/header";
 import Player from "../components/player";
@@ -5,9 +6,16 @@ import Sidebar from "../components/sidebar";
 import "./App.css";
 
 function App() {
+  useEffect(() => {
+    function fetchUserSettings() {
+      console.log("got");
+    }
+    fetchUserSettings();
+  }, []);
+
   return (
     <main>
-      <div className="h-screen flex text-neutral-400">
+      <div className="h-screen overflow-hidden flex text-neutral-400">
         <Sidebar />
         <div className="flex flex-col w-full h-full">
           <Header />
