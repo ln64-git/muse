@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { invoke } from "@tauri-apps/api";
 
 export default function Settings() {
   const [userDirs, setUserDirs] = useState<string[]>([]);
@@ -11,8 +12,19 @@ export default function Settings() {
   };
 
   useEffect(() => {
-    // TODO - Update database with userDirs using Tauri function
-  }, userDirs);
+    function updateSystemSettings() {
+      console.log("userDirs: ", userDirs);
+      const new_settings = { user_library_paths: userDirs }; // Use `new_settings` instead of `newSettings`
+      invoke("update_settings", { new_settings: new_settings }) // Ensure the key is `new_settings`
+        .then(() => {
+          console.log("Settings updated!");
+        })
+        .catch((error) => {
+          console.error("Failed to update settings:", error);
+        });
+    }
+    updateSystemSettings();
+  }, [userDirs]);
 
   return (
     <div>

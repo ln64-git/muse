@@ -31,20 +31,30 @@ async fn update_settings(
     state: State<'_, Arc<Mutex<AppState>>>,
     new_settings: Settings,
 ) -> Result<(), String> {
+    println!("update_settings - Function Called");
     let app_state_guard = state.lock().await;
     let system_db = &app_state_guard.system_db;
+    println!("system db accessed");
 
     let update_result: Result<Vec<Thing>, Error> =
         system_db.update("settings").content(new_settings).await;
 
     match update_result {
-        Ok(_) => Ok(()),
-        Err(error) => Err(format!("Database update error: {:?}", error)),
+        Ok(_) => {
+            println!("Settings updated successfully");
+            Ok(())
+        }
+        Err(error) => {
+            println!("Error updating settings: {:?}", error);
+            Err(format!("Database update error: {:?}", error))
+        }
     }
 }
 
 #[tokio::main]
 async fn main() {
+    println!("main - Function Called");
+
     // Initialize the SurrealDB database at the start of the application
     let app_state = initialize_application()
         .await

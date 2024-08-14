@@ -10,9 +10,8 @@ import { invoke } from "@tauri-apps/api";
 function App() {
   useEffect(() => {
     function fetchUserSettings() {
-      invoke("greet", { name: "World" }).then((response) =>
-        console.log(response)
-      );
+      const settings = invoke("fetch_settings").then;
+      console.log("settings: ", settings);
     }
     fetchUserSettings();
   }, []);
