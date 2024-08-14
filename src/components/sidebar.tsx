@@ -25,8 +25,8 @@ export default function Sidebar() {
         <SidebarIcon src="/sidebar/songs.svg" />
         <SidebarIcon src="/sidebar/settings.svg" />
       </div>
-      <div className="absolute mb-16 left-0 bottom-0 h-[180px] bg-gradient-to-t from-neutral-950 to-transparent pointer-events-none"></div>
-      <div className="absolute left-0 bottom-0 h-[70px] bg-gradient-to-t bg-neutral-950 pointer-events-none"></div>
+      <div className="absolute mb-16 left-0 bottom-0 h-[180px] bg-gradient-to-t from-neutral-950 to-transparent pointer-events-none w-full z-10"></div>
+      <div className="absolute left-0 bottom-0 h-[80px] bg-gradient-to-t bg-neutral-950 pointer-events-none w-[80px]"></div>
     </div>
   );
 }
