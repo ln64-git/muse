@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Display from "../components/display";
 import Header from "../components/header";
 import Player from "../components/player";
@@ -5,6 +6,11 @@ import Sidebar from "../components/sidebar";
 import "./App.css";
 
 function App() {
+  useEffect(() => {
+    function fetchMusicLibrary() {}
+    fetchMusicLibrary();
+  }, []);
+
   return (
     <main>
       <div className="h-screen flex text-neutral-400">
