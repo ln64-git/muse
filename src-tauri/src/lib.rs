@@ -1,8 +1,7 @@
-
 use serde::{Deserialize, Serialize};
 use surrealdb::Surreal;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Track {
     pub id: i32,
     pub title: String,
@@ -16,7 +15,7 @@ pub struct Track {
     pub file_path: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Library {
     pub id: i32,
     pub directory: String,

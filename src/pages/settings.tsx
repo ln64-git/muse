@@ -5,7 +5,6 @@ import { useSettingStore } from "../lib/zustand/settings-store";
 export default function Settings() {
   const [userClientLibraries, setUserClientLibraries] = useState<string[]>([]);
 
-  // Use Zustand hook at the top level
   const userLibraries = useSettingStore((state) => state.userLibraries);
   console.log("userLibraries: ", userLibraries);
 
@@ -18,29 +17,36 @@ export default function Settings() {
 
   // Initialize Settings
   useEffect(() => {
-    if (userLibraries && Array.isArray(userLibraries)) {
-      const libraryPaths = userLibraries.map((library) => library.directory);
+    if (userLibraries) {
+      const libraryPaths = userLibraries?.map((library) => library.directory);
       setUserClientLibraries(libraryPaths);
     }
   }, [userLibraries]);
 
   // Update Settings
   useEffect(() => {
-    if (userLibraries && Array.isArray(userLibraries)) {
-      const libraryPaths = userLibraries.map((library) => library.directory);
-      if (
-        JSON.stringify(userClientLibraries) !== JSON.stringify(libraryPaths)
-      ) {
-        console.log("userClientLibraries: ", userClientLibraries);
-        const newSettings = { userLibraryPaths: userClientLibraries };
-        invoke("update_settings", { newSettings })
-          .then(() => {
-            console.log("Settings updated!");
-          })
-          .catch((error) => {
-            console.error("Failed to update settings:", error);
-          });
-      }
+    console.log("Updating function...");
+    const libraryPaths = userLibraries?.map((library) => library.directory);
+
+    // Check if the number of libraries has changed
+    if (userClientLibraries.length !== libraryPaths?.length) {
+      console.log("userClientLibraries: ", userClientLibraries);
+      const newSettings = {
+        user_libraries: userClientLibraries.map((directory) => ({
+          id: Math.floor(Math.random() * 100) + 1, 
+          directory,
+          name: null,
+          tracks: null,
+        })),
+      };
+
+      invoke("update_settings", { newSettings })
+        .then(() => {
+          console.log("Settings updated!");
+        })
+        .catch((error) => {
+          console.error("Failed to update settings:", error);
+        });
     }
   }, [userClientLibraries, userLibraries]);
 

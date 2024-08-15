@@ -19,6 +19,12 @@ interface Library {
   tracks?: Track[];
 }
 
+interface LibraryPrototype {
+  directory: string;
+  name?: string;
+  tracks?: Track[];
+}
+
 interface Settings {
   user_libraries: Library[];
 }
