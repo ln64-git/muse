@@ -11,9 +11,14 @@ interface Track {
   filePath: string; // Path to the MP3 file
 }
 
+// This is the type I need to convert rust type to this format
 interface Library {
   id: string;
   directory: string;
-  name: string;
-  tracks: Track[];
+  name?: string;
+  tracks?: Track[];
+}
+
+interface Settings {
+  user_libraries: Library[];
 }

@@ -1,3 +1,5 @@
+mod utils;
+
 use muse::{AppState, Settings};
 use std::sync::Arc;
 use surrealdb::sql::Thing;
@@ -8,6 +10,7 @@ use surrealdb::{
 };
 use tauri::{self, api::path::data_dir, State};
 use tokio::sync::Mutex;
+use utils::initialize_user_settings;
 
 use serde_json;
 
@@ -23,6 +26,7 @@ async fn fetch_settings(state: State<'_, Arc<Mutex<AppState>>>) -> Result<String
         Err(error) => return Err(format!("Database error: {:?}", error)),
     };
 
+    // Convert the `Settings` object to a JSON string
     serde_json::to_string(&setting_entries).map_err(|e| format!("Serialization error: {}", e))
 }
 
@@ -31,10 +35,8 @@ async fn update_settings(
     state: State<'_, Arc<Mutex<AppState>>>,
     new_settings: Settings,
 ) -> Result<(), String> {
-    println!("update_settings - Function Called");
     let app_state_guard = state.lock().await;
     let system_db = &app_state_guard.system_db;
-    println!("system db accessed");
 
     let update_result: Result<Vec<Thing>, Error> =
         system_db.update("settings").content(new_settings).await;
@@ -53,9 +55,6 @@ async fn update_settings(
 
 #[tokio::main]
 async fn main() {
-    println!("main - Function Called");
-
-    // Initialize the SurrealDB database at the start of the application
     let app_state = initialize_application()
         .await
         .expect("Failed to initialize the database");
@@ -82,6 +81,8 @@ async fn initialize_application() -> Result<AppState, String> {
         .use_db("muse")
         .await
         .map_err(|e| e.to_string())?;
+
+    initialize_user_settings(&system_db).await?;
 
     let memory_db = Surreal::new::<Mem>(()).await.map_err(|e| e.to_string())?;
     memory_db

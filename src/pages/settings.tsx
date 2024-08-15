@@ -1,30 +1,48 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api";
+import { useSettingStore } from "../lib/zustand/settings-store";
 
 export default function Settings() {
-  const [userDirs, setUserDirs] = useState<string[]>([]);
+  const [userClientLibraries, setUserClientLibraries] = useState<string[]>([]);
+
+  // Use Zustand hook at the top level
+  const userLibraries = useSettingStore((state) => state.userLibraries);
+  console.log("userLibraries: ", userLibraries);
 
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    const directories = event.target.value.split("\n");
-    setUserDirs(directories);
+    const directories = event.target.value.split("\n").filter(Boolean);
+    setUserClientLibraries(directories);
   };
 
+  // Initialize Settings
   useEffect(() => {
-    function updateSystemSettings() {
-      console.log("userDirs: ", userDirs);
-      const new_settings = { user_library_paths: userDirs }; // Use `new_settings` instead of `newSettings`
-      invoke("update_settings", { new_settings: new_settings }) // Ensure the key is `new_settings`
-        .then(() => {
-          console.log("Settings updated!");
-        })
-        .catch((error) => {
-          console.error("Failed to update settings:", error);
-        });
+    if (userLibraries && Array.isArray(userLibraries)) {
+      const libraryPaths = userLibraries.map((library) => library.directory);
+      setUserClientLibraries(libraryPaths);
     }
-    updateSystemSettings();
-  }, [userDirs]);
+  }, [userLibraries]);
+
+  // Update Settings
+  useEffect(() => {
+    if (userLibraries && Array.isArray(userLibraries)) {
+      const libraryPaths = userLibraries.map((library) => library.directory);
+      if (
+        JSON.stringify(userClientLibraries) !== JSON.stringify(libraryPaths)
+      ) {
+        console.log("userClientLibraries: ", userClientLibraries);
+        const newSettings = { userLibraryPaths: userClientLibraries };
+        invoke("update_settings", { newSettings })
+          .then(() => {
+            console.log("Settings updated!");
+          })
+          .catch((error) => {
+            console.error("Failed to update settings:", error);
+          });
+      }
+    }
+  }, [userClientLibraries, userLibraries]);
 
   return (
     <div>
@@ -37,6 +55,7 @@ export default function Settings() {
             placeholder="Enter directories, one per line"
             rows={4}
             onChange={handleTextareaChange}
+            value={userClientLibraries.join("\n")}
           />
         </div>
       </div>

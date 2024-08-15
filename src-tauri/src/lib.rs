@@ -1,13 +1,32 @@
-use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
 use surrealdb::Surreal;
-use tauri::Manager;
-use tokio::sync::Mutex;
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Track {
+    pub id: i32,
+    pub title: String,
+    pub artist: String,
+    pub album: String,
+    pub genre: String,
+    pub duration: i32,
+    pub year: i32,
+    pub track_number: i32,
+    pub album_art_url: Option<String>,
+    pub file_path: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Library {
+    pub id: i32,
+    pub directory: String,
+    pub name: Option<String>,
+    pub tracks: Option<Vec<Track>>,
+}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Settings {
-    pub user_library_paths: Vec<String>,
+    pub user_libraries: Option<Vec<Library>>,
 }
 
 #[derive(Debug)]
@@ -23,10 +42,4 @@ impl Clone for AppState {
             memory_db: self.memory_db.clone(),
         }
     }
-}
-
-pub async fn access_app_state(app_handle: tauri::AppHandle) -> AppState {
-    let shared_state = app_handle.state::<Arc<Mutex<AppState>>>();
-    let app_state_guard = shared_state.lock().await;
-    app_state_guard.clone()
 }
