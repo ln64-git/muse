@@ -6,7 +6,6 @@ export default function Settings() {
   const [userClientLibraries, setUserClientLibraries] = useState<string[]>([]);
 
   const userLibraries = useSettingStore((state) => state.userLibraries);
-  console.log("userLibraries: ", userLibraries);
 
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -15,7 +14,6 @@ export default function Settings() {
     setUserClientLibraries(directories);
   };
 
-  // Initialize Settings
   useEffect(() => {
     if (userLibraries) {
       const libraryPaths = userLibraries?.map((library) => library.directory);
@@ -23,20 +21,14 @@ export default function Settings() {
     }
   }, [userLibraries]);
 
-  // Update Settings
   useEffect(() => {
-    console.log("Updating function...");
     const libraryPaths = userLibraries?.map((library) => library.directory);
 
-    // Check if the number of libraries has changed
     if (userClientLibraries.length !== libraryPaths?.length) {
-      console.log("userClientLibraries: ", userClientLibraries);
       const newSettings = {
-        user_libraries: userClientLibraries.map((directory) => ({
-          id: Math.floor(Math.random() * 100) + 1, 
+        user_libraries: userClientLibraries.map((directory, index) => ({
+          id: index + 1,
           directory,
-          name: null,
-          tracks: null,
         })),
       };
 
