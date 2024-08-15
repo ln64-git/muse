@@ -1,9 +1,5 @@
-mod utils;
-
 use muse::{AppState, Settings};
 use std::sync::Arc;
-use surrealdb::sql::Thing;
-use surrealdb::Error;
 use surrealdb::{
     engine::local::{Mem, RocksDb},
     Surreal,
@@ -11,6 +7,7 @@ use surrealdb::{
 use tauri::{self, api::path::data_dir, State};
 use tokio::sync::Mutex;
 use utils::initialize_user_settings;
+mod utils;
 
 use serde_json::{self};
 #[tauri::command]
@@ -41,19 +38,20 @@ async fn update_settings(
     let app_state_guard = state.lock().await;
     let system_db = &app_state_guard.system_db;
 
-    // Update the single settings document
-    let update_result: Result<Option<Thing>, Error> = system_db
-        .update(("settings", "single"))
-        .content(&new_settings)
-        .await;
+    let update_result: Result<Vec<Settings>, surrealdb::Error> =
+        system_db.update("settings").content(&new_settings).await;
 
     match update_result {
-        Ok(Some(_)) => Ok(()),
-        Ok(None) => Err("No document was updated.".into()),
+        Ok(updated_docs) => {
+            if !updated_docs.is_empty() {
+                Ok(())
+            } else {
+                Err("No document was updated.".into())
+            }
+        }
         Err(e) => Err(format!("Database update error: {:?}", e)),
     }
 }
-
 
 #[tokio::main]
 async fn main() {

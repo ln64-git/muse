@@ -26,8 +26,7 @@ export default function Settings() {
 
     if (userClientLibraries.length !== libraryPaths?.length) {
       const newSettings = {
-        user_libraries: userClientLibraries.map((directory, index) => ({
-          id: index + 1,
+        user_libraries: userClientLibraries.map((directory) => ({
           directory,
         })),
       };

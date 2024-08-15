@@ -3,7 +3,6 @@ use surrealdb::Surreal;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Library {
-    pub id: i32,
     pub directory: String,
 }
 
