@@ -67,7 +67,8 @@ export default function Settings() {
           <textarea
             className="bg-neutral-950 p-2 px-4 rounded-md outline-none resize-none"
             placeholder="Enter directories, one per line"
-            rows={4}
+            rows={3}
+            wrap="off"
             onChange={handleTextareaChange}
             value={textareaContent}
           />

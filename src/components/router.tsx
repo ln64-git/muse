@@ -6,7 +6,7 @@ import Playlist from "../pages/playlist";
 import Settings from "../pages/settings";
 import Songs from "../pages/songs";
 
-export default function Display() {
+export default function Router() {
   const currentPage = useUserStore((state) => state.currentPage);
 
   const renderPage = () => {

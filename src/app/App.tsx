@@ -1,5 +1,5 @@
 import "./App.css";
-import Display from "../components/display";
+import Router from "../components/router";
 import Header from "../components/header";
 import Player from "../components/player";
 import Sidebar from "../components/sidebar";
@@ -14,7 +14,7 @@ function App() {
           <div className="flex-grow h-full bg-neutral-950 pr-4 pb-1 overflow-hidden">
             <div className="bg-neutral-900 rounded-lg h-full flex flex-col">
               <div className="flex-grow overflow-y-auto">
-                <Display />
+                <Router />
               </div>
               <Player />
             </div>

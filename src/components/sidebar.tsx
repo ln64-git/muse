@@ -4,6 +4,7 @@ function SidebarIcon({ src }: { src: string }) {
   const setCurrentPage = useUserStore((state) => state.setCurrentPage);
   const currentPage = useUserStore((state) => state.currentPage);
   const page = src.replace("/sidebar/", "").replace(".svg", "");
+  console.log("page: ", page);
 
   const isActive = currentPage === page;
 

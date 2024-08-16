@@ -1,11 +1,22 @@
+import { useUserStore } from "../lib/zustand/user-store";
+
 export default function Library() {
+  const setCurrentPage = useUserStore((state) => state.setCurrentPage);
+
+  const handleClick = () => {
+    console.log("Clicked");
+    setCurrentPage("settings");
+  };
+
   return (
     <div>
       <div className="font-light pb-4">Library</div>
       <div className="p-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mx-auto max-w-5xl">
-        {Array.from({ length: 24 }, (_, index) => (
-          <LibraryCard key={index} />
-        ))}
+        {/* {Array.from({ length: 1 }, (_, index) => ( */}
+        <div onClick={handleClick}>
+          <LibraryCard />
+        </div>
+        {/* ))} */}
       </div>
     </div>
   );
