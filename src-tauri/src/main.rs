@@ -34,7 +34,6 @@ async fn update_settings(
     state: State<'_, Arc<Mutex<AppState>>>,
     new_settings: Settings,
 ) -> Result<(), String> {
-    println!("new_settings: {:#?}", new_settings);
     let app_state_guard = state.lock().await;
     let system_db = &app_state_guard.system_db;
 
