@@ -24,7 +24,7 @@ function SidebarIcon({ src }: { src: string }) {
 export default function Sidebar() {
   return (
     <div className="relative">
-      <div className="h-full max-h-full w-[80px] pt-[75px] space-y-4 bg-gradient-to-t bg-neutral-950">
+      <div className="h-full max-h-full w-[80px] pt-[68px] space-y-4 bg-gradient-to-t bg-neutral-950">
         <SidebarIcon src="/sidebar/library.svg" />
         <SidebarIcon src="/sidebar/playlist.svg" />
         <SidebarIcon src="/sidebar/artist.svg" />

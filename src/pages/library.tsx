@@ -40,7 +40,7 @@ export default function Library() {
   return (
     <div>
       <div className="font-light pb-4">Library</div>
-      <div className="p-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mx-auto max-w-5xl">
+      <div className="p-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  mx-auto max-w-5xl">
         {userLibraries.length === 0 ? (
           <NewLibraryCard onClick={() => setCurrentPage("settings")} />
         ) : (
@@ -76,7 +76,7 @@ function LibraryCard({
 }) {
   return (
     <div onClick={onClick} className="flex flex-col items-center">
-      <div className="w-24 h-24 bg-gradient-to-br from-neutral-800 to-neutral-600 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-out flex items-center justify-center cursor-pointer">
+      <div className="w-24 h-24 bg-gradient-to-br from-neutral-800 to-neutral-700 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-out flex items-center justify-center cursor-pointer">
         <span className="text-white font-medium"></span>
       </div>
       <div className="pt-2 w-full max-w-[170px] text-neutral-300 text-center break-words">
