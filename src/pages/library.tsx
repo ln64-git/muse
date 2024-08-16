@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSettingsStore } from "../lib/zustand/settings-store";
 import { useUserStore } from "../lib/zustand/user-store";
 import { invoke } from "@tauri-apps/api";
+import { PlusIcon } from "../icon/icons";
 
 export default function Library() {
   const [userLibraries, setUserLibraries] = useState<Library[]>([]);
@@ -83,27 +84,5 @@ function LibraryCard({
         {library.directory}
       </div>
     </div>
-  );
-}
-
-type PlusIconProps = {
-  size?: number; // Optional, defaults to 24
-  className?: string; // Optional, defaults to empty string
-};
-
-function PlusIcon({ size = 24, className = "" }: PlusIconProps) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      className={className}
-    >
-      <path
-        d="M12 2C12.5523 2 13 2.44772 13 3V11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H13V21C13 21.5523 12.5523 22 12 22C11.4477 22 11 21.5523 11 21V13H3C2.44772 13 2 12.5523 2 12C2 11.4477 2.44772 11 3 11H11V3C11 2.44772 11.44772 2 12 2Z"
-        fill="currentColor"
-      />
-    </svg>
   );
 }
