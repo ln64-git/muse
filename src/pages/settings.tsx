@@ -3,7 +3,6 @@ import { invoke } from "@tauri-apps/api";
 import { debounce } from "lodash";
 
 export default function Settings() {
-  const [userClientLibraries, setUserClientLibraries] = useState<Library[]>([]);
   const [initialLibraries, setInitialLibraries] = useState<Library[]>([]);
   const [textareaContent, setTextareaContent] = useState("");
 
@@ -14,9 +13,7 @@ export default function Settings() {
         const settingsJson: string = await invoke("fetch_settings");
         const settings: Settings = JSON.parse(settingsJson);
         const libraries = settings.user_libraries || [];
-        setUserClientLibraries(libraries);
         setInitialLibraries(libraries); // Store initial state for comparison
-
         // Initialize the textarea content
         setTextareaContent(libraries.map((lib) => lib.directory).join("\n"));
       } catch (error) {
@@ -25,7 +22,6 @@ export default function Settings() {
     };
     fetchSettings();
   }, []);
-
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -38,7 +34,6 @@ export default function Settings() {
       const newLibraries = directories.map((directory) => ({
         directory,
       }));
-
       // Only update if there are changes
       if (JSON.stringify(newLibraries) !== JSON.stringify(initialLibraries)) {
         // Optimistically update the backend
@@ -49,7 +44,6 @@ export default function Settings() {
           await invoke("update_settings", { newSettings });
           console.log("Settings updated!");
           setInitialLibraries(newLibraries); // Update the initial state after successful sync
-          setUserClientLibraries(newLibraries); // Update Zustand state
         } catch (error) {
           console.error("Failed to update settings:", error);
           setTextareaContent(
@@ -58,7 +52,6 @@ export default function Settings() {
         }
       }
     }, 500);
-
     updateSettings();
     return () => {
       updateSettings.cancel();
