@@ -1,45 +1,68 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api";
-import { useSettingStore } from "../lib/zustand/settings-store";
+import { debounce } from "lodash"; // Import debounce from lodash
 
 export default function Settings() {
-  const [userClientLibraries, setUserClientLibraries] = useState<string[]>([]);
+  const [userClientLibraries, setUserClientLibraries] = useState<Library[]>([]);
+  const [initialLibraries, setInitialLibraries] = useState<Library[]>([]);
 
-  const userLibraries = useSettingStore((state) => state.userLibraries);
+  // Fetch initial settings on component mount
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const settingsJson: string = await invoke("fetch_settings");
+        const settings: Settings = JSON.parse(settingsJson);
+
+        const libraries = settings.user_libraries || [];
+        setUserClientLibraries(libraries);
+        setInitialLibraries(libraries); // Store initial state for comparison
+      } catch (error) {
+        console.error("Error fetching user settings:", error);
+      }
+    };
+
+    fetchSettings();
+  }, []);
 
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
+    // Convert directories into Library objects
     const directories = event.target.value.split("\n").filter(Boolean);
-    setUserClientLibraries(directories);
+    const newLibraries = directories.map((directory) => ({
+      directory,
+    }));
+    setUserClientLibraries(newLibraries);
   };
 
   useEffect(() => {
-    if (userLibraries) {
-      const libraryPaths = userLibraries?.map((library) => library.directory);
-      setUserClientLibraries(libraryPaths);
-    }
-  }, [userLibraries]);
+    const updateSettings = debounce(async () => {
+      // Only update if there are changes
+      if (
+        JSON.stringify(userClientLibraries) !== JSON.stringify(initialLibraries)
+      ) {
+        // Optimistically update the backend
+        const newSettings = {
+          user_libraries: userClientLibraries,
+        };
 
-  useEffect(() => {
-    const libraryPaths = userLibraries?.map((library) => library.directory);
-
-    if (userClientLibraries.length !== libraryPaths?.length) {
-      const newSettings = {
-        user_libraries: userClientLibraries.map((directory) => ({
-          directory,
-        })),
-      };
-
-      invoke("update_settings", { newSettings })
-        .then(() => {
+        try {
+          await invoke("update_settings", { newSettings });
           console.log("Settings updated!");
-        })
-        .catch((error) => {
+          setInitialLibraries(userClientLibraries); // Update the initial state after successful sync
+        } catch (error) {
           console.error("Failed to update settings:", error);
-        });
-    }
-  }, [userClientLibraries, userLibraries]);
+          setUserClientLibraries(initialLibraries); // Revert to previous state on failure
+        }
+      }
+    }, 500);
+
+    updateSettings();
+
+    return () => {
+      updateSettings.cancel();
+    };
+  }, [userClientLibraries, initialLibraries]);
 
   return (
     <div>
@@ -52,7 +75,7 @@ export default function Settings() {
             placeholder="Enter directories, one per line"
             rows={4}
             onChange={handleTextareaChange}
-            value={userClientLibraries.join("\n")}
+            value={userClientLibraries.map((lib) => lib.directory).join("\n")}
           />
         </div>
       </div>

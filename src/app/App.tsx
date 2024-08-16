@@ -8,26 +8,24 @@ import { invoke } from "@tauri-apps/api";
 import { useSettingStore } from "../lib/zustand/settings-store";
 
 function App() {
-  const setUserLibraries = useSettingStore((state) => state.setUserLibraries);
+  // const setUserLibraries = useSettingStore((state) => state.setUserLibraries);
 
-  useEffect(() => {
-    const fetchUserSettings = async () => {
-      try {
-        const settingsJson: string = await invoke("fetch_settings");
-        const settings: Settings = JSON.parse(settingsJson);
-        console.log("settings: ", settings);
-
-        // Directly set the libraries in the Zustand store
-        const libraries: Library[] = settings.user_libraries;
-        setUserLibraries(libraries);
-      } catch (error) {
-        console.error("Error fetching user settings:", error);
-      }
-    };
-
-    // Fetch user settings on component mount
-    fetchUserSettings();
-  }, [setUserLibraries]); // Adding setUserLibraries as a dependency to useEffect
+  // useEffect(() => {
+  //   const fetchUserSettings = async () => {
+  //     try {
+  //       const settingsJson: string = await invoke("fetch_settings");
+  //       const settings: Settings = JSON.parse(settingsJson);
+  //       console.log("settings: ", settings);
+  //       // Directly set the libraries in the Zustand store
+  //       const libraries: Library[] = settings.user_libraries;
+  //       setUserLibraries(libraries);
+  //     } catch (error) {
+  //       console.error("Error fetching user settings:", error);
+  //     }
+  //   };
+  //   // Fetch user settings on component mount
+  //   fetchUserSettings();
+  // }, [setUserLibraries]);
 
   return (
     <main>
