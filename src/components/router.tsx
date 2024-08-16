@@ -28,5 +28,5 @@ export default function Router() {
     }
   };
 
-  return <div className="p-4 ">{renderPage()}</div>;
+  return <div className="p-4">{renderPage()}</div>;
 }

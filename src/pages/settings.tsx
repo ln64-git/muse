@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api";
 import { debounce } from "lodash";
+import { useSettingsStore } from "../lib/zustand/settings-store";
 
 export default function Settings() {
+  const setUserLibraries = useSettingsStore((state) => state.setUserLibraries);
+
   const [initialLibraries, setInitialLibraries] = useState<Library[]>([]);
   const [textareaContent, setTextareaContent] = useState("");
 
@@ -16,12 +19,14 @@ export default function Settings() {
         setInitialLibraries(libraries); // Store initial state for comparison
         // Initialize the textarea content
         setTextareaContent(libraries.map((lib) => lib.directory).join("\n"));
+        setUserLibraries(libraries); // Initialize Zustand store with the fetched libraries
       } catch (error) {
         console.error("Error fetching user settings:", error);
       }
     };
     fetchSettings();
-  }, []);
+  }, [setUserLibraries]);
+
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -42,8 +47,8 @@ export default function Settings() {
         };
         try {
           await invoke("update_settings", { newSettings });
-          console.log("Settings updated!");
           setInitialLibraries(newLibraries); // Update the initial state after successful sync
+          setUserLibraries(newLibraries); // Update Zustand store with the new libraries
         } catch (error) {
           console.error("Failed to update settings:", error);
           setTextareaContent(
@@ -56,7 +61,7 @@ export default function Settings() {
     return () => {
       updateSettings.cancel();
     };
-  }, [textareaContent, initialLibraries]);
+  }, [textareaContent, initialLibraries, setUserLibraries]);
 
   return (
     <div>

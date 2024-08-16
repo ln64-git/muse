@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface SettingState {
+interface SettingsState {
   userLibraries: Library[];
   setUserLibraries: (libraries: Library[]) => void;
 }
 
-export const useSettingStore = create<SettingState>()((set) => ({
+export const useSettingsStore = create<SettingsState>()((set) => ({
   userLibraries: [],
   setUserLibraries: (libraries) =>
     set(() => ({
