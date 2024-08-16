@@ -16,8 +16,8 @@ function PlayerIcon({ src, size }: { src: string; size: number }) {
 
 export default function Player() {
   return (
-    <div className="bg-neutral-950 rounded-b-lg flex w-full justify-center items-center border-opacity-25">
-      <div className=" flex items-center">
+    <div className="bg-neutral-950 rounded-b-lg flex w-full justify-center items-center border-opacity-25  ">
+      <div className="flex items-center">
         <PlayerIcon size={40} src="/player/shuffle.svg" />
       </div>
       <div className="flex">
@@ -27,7 +27,7 @@ export default function Player() {
         <PlayerIcon size={45} src="/player/fast-forward.svg" />
         <PlayerIcon size={45} src="/player/track-next.svg" />
       </div>
-      <div className=" flex items-center">
+      <div className="flex items-center">
         <PlayerIcon size={35} src="/player/repeat.svg" />
       </div>
     </div>
