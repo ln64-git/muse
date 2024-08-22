@@ -3,6 +3,7 @@ import { useSettingsStore } from "../lib/zustand/settings-store";
 import { useUserStore } from "../lib/zustand/user-store";
 import { invoke } from "@tauri-apps/api";
 import { PlusIcon } from "../icon/icons";
+import ViewChanger from "../components/view-changer";
 
 export default function Library() {
   const [userLibraries, setUserLibraries] = useState<Library[]>([]);
@@ -40,7 +41,12 @@ export default function Library() {
 
   return (
     <div>
-      <div className="font-light pb-4">Library</div>
+      <div className="font-light pb-4 flex justify-between">
+        <div className="p-2">Library</div>
+        <div>
+          <ViewChanger />
+        </div>
+      </div>
       <div className="p-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  mx-auto max-w-5xl">
         {userLibraries.length === 0 ? (
           <NewLibraryCard onClick={() => setCurrentPage("settings")} />

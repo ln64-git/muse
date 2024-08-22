@@ -150,3 +150,47 @@ export function PlusIcon({ size = 24, className = "" }: IconProps) {
     </svg>
   );
 }
+
+export function ListViewIcon({ size = 24, className = "" }: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      fill="none"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <path
+        d="M0 0 C5.28 0 10.56 0 16 0 C16 0.66 16 1.32 16 2 C10.72 2 5.44 2 0 2 C0 1.34 0 0.68 0 0 Z "
+        fill="currentColor"
+        transform="translate(11,22)"
+      />
+      <path
+        d="M0 0 C5.28 0 10.56 0 16 0 C16 0.66 16 1.32 16 2 C10.72 2 5.44 2 0 2 C0 1.34 0 0.68 0 0 Z "
+        fill="currentColor"
+        transform="translate(11,14)"
+      />
+      <path
+        d="M0 0 C5.28 0 10.56 0 16 0 C16 0.66 16 1.32 16 2 C10.72 2 5.44 2 0 2 C0 1.34 0 0.68 0 0 Z "
+        fill="currentColor"
+        transform="translate(11,6)"
+      />
+      <path
+        d="M0 0 C1.32 0 2.64 0 4 0 C4 1.32 4 2.64 4 4 C2.68 4 1.36 4 0 4 C0 2.68 0 1.36 0 0 Z "
+        fill="currentColor"
+        transform="translate(3,21)"
+      />
+      <path
+        d="M0 0 C1.32 0 2.64 0 4 0 C4 1.32 4 2.64 4 4 C2.68 4 1.36 4 0 4 C0 2.68 0 1.36 0 0 Z "
+        fill="currentColor"
+        transform="translate(3,13)"
+      />
+      <path
+        d="M0 0 C1.32 0 2.64 0 4 0 C4 1.32 4 2.64 4 4 C2.68 4 1.36 4 0 4 C0 2.68 0 1.36 0 0 Z "
+        fill="currentColor"
+        transform="translate(3,5)"
+      />
+    </svg>
+  );
+}
