@@ -26,9 +26,9 @@ export default function Sidebar() {
     <div className="relative">
       <div className="h-full max-h-full w-[80px] pt-[68px] space-y-4 bg-gradient-to-t bg-neutral-950">
         <SidebarIcon src="/sidebar/library.svg" />
-        <SidebarIcon src="/sidebar/playlist.svg" />
         <SidebarIcon src="/sidebar/artist.svg" />
         <SidebarIcon src="/sidebar/album.svg" />
+        <SidebarIcon src="/sidebar/playlist.svg" />
         <SidebarIcon src="/sidebar/songs.svg" />
         <SidebarIcon src="/sidebar/settings.svg" />
       </div>

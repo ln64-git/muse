@@ -2,7 +2,7 @@ import { useUserStore } from "../lib/zustand/user-store";
 import { PlusIcon } from "../icon/icons";
 import { useSettingsStore } from "../lib/zustand/settings-store";
 
-export default function LibraryGridView({}: {}) {
+export default function ArtistGridView({}: {}) {
   const userLibraries = useSettingsStore((state) => state.userLibraries);
   const setCurrentPage = useUserStore((state) => state.setCurrentPage);
   const selectedLibraries = useUserStore((state) => state.selectedLibraries);

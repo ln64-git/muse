@@ -9,10 +9,12 @@ interface UserState {
   previousPage: string;
   command: string;
   libraryView: "List" | "Grid";
+  artistView: "List" | "Grid";
   selectedLibraries: Library[];
   setCurrentPage: (url: string) => void;
   runCommand: (command: string) => void;
   setLibraryView: (view: "List" | "Grid") => void;
+  setArtistView: (view: "List" | "Grid") => void;
   setSelectedLibraries: (
     libraries: Library[] | ((prev: Library[]) => Library[])
   ) => void;
@@ -22,8 +24,9 @@ export const useUserStore = create<UserState>((set) => ({
   currentPage: "library",
   previousPage: "",
   command: "",
-  libraryView: "List",
   selectedLibraries: [],
+  libraryView: "List",
+  artistView: "List",
   setCurrentPage: (url) =>
     set((state) => ({
       currentPage: url,
@@ -42,6 +45,10 @@ export const useUserStore = create<UserState>((set) => ({
   setLibraryView: (view) =>
     set(() => ({
       libraryView: view,
+    })),
+  setArtistView: (view) =>
+    set(() => ({
+      artistView: view,
     })),
   setSelectedLibraries: (libraries) =>
     set((state) => ({
