@@ -60,6 +60,13 @@ async fn main() {
 
     let shared_state = Arc::new(Mutex::new(app_state));
 
+    // Async function to check for changes to user_libraries
+    // if changes occur then initalize library initilization on new libraries
+    // library initilization should involve deriving Artists / Albums / Songs from library directory paths
+    // update Library interface / struct to include for Artists[] / Albums[] / Songs[] and any other usefull relevant data
+    // update Settings with actual user_libraries data including Artists[] / Albums[] / Songs[]
+    // cache new library initilization results into memory database
+
     tauri::Builder::default()
         .manage(shared_state)
         .invoke_handler(tauri::generate_handler![fetch_settings, update_settings])

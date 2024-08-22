@@ -6,6 +6,8 @@ import ArtistGridView from "../view/artist-grid-view";
 
 export default function ArtistPage() {
   const artistView = useUserStore((state) => state.artistView);
+  // TODO Fetch Artists from Backend
+
   return (
     <div>
       <PageHeader
