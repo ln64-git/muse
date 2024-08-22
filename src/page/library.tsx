@@ -15,7 +15,8 @@ export default function Library() {
   const setUserLibrariesInStore = useSettingsStore(
     (state) => state.setUserLibraries
   );
-  const libraryView = useUserStore((state) => state.libraryView); // Get libraryView from Zustand
+  const libraryView = useUserStore((state) => state.libraryView);
+  const selectedLibraries = useUserStore((state) => state.selectedLibraries); // Get selectedLibraries from Zustand
 
   async function fetchLibraries() {
     if (userLibrariesFromStore.length > 0) {
@@ -39,13 +40,20 @@ export default function Library() {
     fetchLibraries();
   }, []);
 
-  console.log("userLibraries: ", userLibraries);
-  console.log("libraryView: ", libraryView);
+  // Determine the selection message
+  const selectedCount = selectedLibraries.length;
+  let selectionMessage = "No libraries selected";
+  if (selectedCount === 1) {
+    selectionMessage = "1 library selected";
+  } else if (selectedCount > 1) {
+    selectionMessage = `${selectedCount} libraries selected`;
+  }
 
   return (
     <div>
       <div className="font-light pb-4 flex justify-between">
         <div className="p-2">Library</div>
+        <div className="p-2">{selectionMessage}</div>
         <div>
           <ViewChanger />
         </div>

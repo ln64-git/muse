@@ -1,13 +1,21 @@
 import { create } from "zustand";
 
+interface Library {
+  directory: string;
+}
+
 interface UserState {
   currentPage: string;
   previousPage: string;
   command: string;
   libraryView: "List" | "Grid";
+  selectedLibraries: Library[];
   setCurrentPage: (url: string) => void;
   runCommand: (command: string) => void;
   setLibraryView: (view: "List" | "Grid") => void;
+  setSelectedLibraries: (
+    libraries: Library[] | ((prev: Library[]) => Library[])
+  ) => void;
 }
 
 export const useUserStore = create<UserState>((set) => ({
@@ -15,6 +23,7 @@ export const useUserStore = create<UserState>((set) => ({
   previousPage: "",
   command: "",
   libraryView: "List",
+  selectedLibraries: [],
   setCurrentPage: (url) =>
     set((state) => ({
       currentPage: url,
@@ -33,5 +42,12 @@ export const useUserStore = create<UserState>((set) => ({
   setLibraryView: (view) =>
     set(() => ({
       libraryView: view,
+    })),
+  setSelectedLibraries: (libraries) =>
+    set((state) => ({
+      selectedLibraries:
+        typeof libraries === "function"
+          ? libraries(state.selectedLibraries)
+          : libraries,
     })),
 }));
