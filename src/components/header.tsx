@@ -13,10 +13,10 @@ export default function Header() {
         Muse
       </button>
       <div className="flex">
-        <div className="min-w-[45px] cursor-pointer h-[50px] w-[50px] flex items-center justify-center p-2  rounded-lg transition-all duration-300 transform hover:scale-110 hover:bg-neutral-900 hover:shadow-lg hover:brightness-150">
+        <div className="min-w-[45px] cursor-pointer h-[50px] w-[50px] flex items-center justify-center p-2  rounded-lg transition-all duration-300 transform hover:scale-110  hover:shadow-lg hover:brightness-150">
           <SearchIcon className="fill-current text-neutral-600" size={25} />
         </div>
-        <div className="min-w-[45px] cursor-pointer h-[50px] w-[50px] flex items-center justify-center p-2  rounded-lg transition-all duration-300 transform hover:scale-110 hover:bg-neutral-900 hover:shadow-lg hover:brightness-150">
+        <div className="min-w-[45px] cursor-pointer h-[50px] w-[50px] flex items-center justify-center p-2  rounded-lg transition-all duration-300 transform hover:scale-110  hover:shadow-lg hover:brightness-150">
           <VolumeHighIcon className="fill-current text-neutral-600" size={25} />
         </div>
       </div>

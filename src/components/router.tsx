@@ -1,10 +1,10 @@
 import { useUserStore } from "../lib/zustand/user-store";
-import Album from "../pages/album";
-import Artist from "../pages/artist";
-import Library from "../pages/library";
-import Playlist from "../pages/playlist";
-import Settings from "../pages/settings";
-import Songs from "../pages/songs";
+import Album from "../page/album";
+import Artist from "../page/artist";
+import Library from "../page/library";
+import Playlist from "../page/playlist";
+import Settings from "../page/settings";
+import Songs from "../page/songs";
 
 export default function Router() {
   const currentPage = useUserStore((state) => state.currentPage);
